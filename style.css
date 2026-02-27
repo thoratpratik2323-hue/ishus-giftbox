@@ -1,0 +1,413 @@
+:root {
+    --primary-pink: #ff758c;
+    --secondary-pink: #ff7eb3;
+    --glass-bg: rgba(255, 255, 255, 0.15);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-color: #ffffff;
+    --accent-gold: #ffd700;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    color: var(--text-color);
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.background-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Use current directory image if possible, or fallback to gradient */
+    background-image: url('background.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+    z-index: -1;
+}
+
+header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    animation: fadeInDown 1s ease-out;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.logo i {
+    font-size: 3rem;
+    color: var(--accent-gold);
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+}
+
+h1 {
+    font-family: 'Dancing Script', cursive;
+    font-size: 4rem;
+    background: linear-gradient(to right, #fff, var(--accent-gold));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+main {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    flex-grow: 1;
+}
+
+.gift-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 20px 0;
+}
+
+.gift-card {
+    text-decoration: none;
+    color: inherit;
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: fadeInUp 0.8s ease-out both;
+    position: relative;
+    overflow: hidden;
+}
+
+.gift-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.gift-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.gift-card:hover::before {
+    opacity: 1;
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #fff;
+    transition: transform 0.4s;
+}
+
+.gift-card:hover .card-icon {
+    transform: scale(1.2) rotate(5deg);
+}
+
+h3 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    opacity: 0.8;
+}
+
+footer {
+    padding: 40px 20px;
+    text-align: center;
+    width: 100%;
+}
+
+.eternal {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.8rem;
+    margin-top: 10px;
+    color: var(--accent-gold);
+}
+
+/* Locked Card Styles */
+.gift-card.locked {
+    cursor: not-allowed;
+    filter: grayscale(0.5) contrast(0.8);
+    opacity: 0.9;
+}
+
+.gift-card.locked:hover {
+    transform: translateY(-2px);
+    box-shadow: none;
+}
+
+.lock-overlay {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-gold);
+    font-size: 1.2rem;
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 2;
+}
+
+.gift-card.unlocked .lock-overlay {
+    display: none;
+}
+
+.gift-card.unlocked {
+    filter: none;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.section-title {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: var(--accent-gold);
+    text-align: center;
+    margin: 60px 0 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    animation: fadeIn 1s ease-in;
+}
+
+.chemistry-section {
+    margin-bottom: 50px;
+}
+
+.chemistry .card-icon {
+    color: #00d4ff;
+}
+
+/* Specific Card Colors/Icons */
+.study .card-icon {
+    color: #8ecae6;
+}
+
+.shaadi .card-icon {
+    color: #ffadad;
+}
+
+.proposal .card-icon {
+    color: #ffd6a5;
+}
+
+.birthday .card-icon {
+    color: #fdffb6;
+}
+
+.valentine .card-icon {
+    color: #ff758c;
+}
+
+.buddy .card-icon {
+    color: #caffbf;
+}
+
+.kiss .card-icon {
+    color: #ffc6ff;
+}
+
+.hug .card-icon {
+    color: #bdb2ff;
+}
+
+.promise .card-icon {
+    color: #a0c4ff;
+}
+
+.teddy .card-icon {
+    color: #ffcfd2;
+}
+
+.apology .card-icon {
+    color: #9bf6ff;
+}
+
+.youtube .card-icon {
+    color: #ff0000;
+}
+
+.heart .card-icon {
+    color: #ff0054;
+}
+
+/* Floating Hearts Animation */
+.hearts-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating-heart {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    animation: float 10s linear infinite;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 0.5;
+    }
+
+    90% {
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px) rotate(-1deg);
+    }
+
+    75% {
+        transform: translateX(5px) rotate(1deg);
+    }
+}
+
+.gift-card.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Staggered animation for cards */
+.gift-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.gift-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.gift-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.gift-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.gift-card:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.gift-card:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.gift-card:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.gift-card:nth-child(n+8) {
+    animation-delay: 0.8s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2.8rem;
+    }
+
+    .logo i {
+        font-size: 2.2rem;
+    }
+
+    .gift-grid {
+        grid-template-columns: 1fr;
+    }
+}
