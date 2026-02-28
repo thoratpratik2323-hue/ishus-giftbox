@@ -227,7 +227,7 @@ function openVault() {
 }
 function checkVault() {
     const pw = document.getElementById('vault-password').value.toLowerCase();
-    if (pw === 'poku' || pw === 'ishu' || pw === 'iloveyou' || pw === '0802') {
+    if (pw === '1918') {
         document.getElementById('vault-lock-screen').style.display = 'none';
         document.getElementById('vault-content').style.display = 'block';
         currentLetter = 0;
