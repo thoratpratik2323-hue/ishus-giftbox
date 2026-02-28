@@ -7,998 +7,16 @@
     <title>Ishu's Giftbox 🎁 | Made with Love by Poku</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
-        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;400;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Outfit:wght@300;400;600;700;800&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <style>
-        /* ───────────────────────────────────────
-   THEME VARS (set by JS based on time)
-─────────────────────────────────────── */
-        :root {
-            --bg1: #0f0c1d;
-            --bg2: #1a0533;
-            --bg3: #0d1b3e;
-            --glow1: rgba(124, 58, 237, 0.25);
-            --glow2: rgba(168, 85, 247, 0.2);
-            --glass: rgba(255, 255, 255, 0.07);
-            --glass-border: rgba(167, 139, 250, 0.2);
-            --text: #f1e9ff;
-            --gold: #e2b96f;
-            --rose: #f9a8d4;
-            --hover-border: rgba(226, 185, 111, 0.5);
-            --hover-shadow: rgba(124, 58, 237, 0.3);
-        }
-
-        body.day-mode {
-            --bg1: #1a0a2e;
-            --bg2: #2d1260;
-            --bg3: #1a0a2e;
-            --glow1: rgba(251, 191, 36, 0.15);
-            --glow2: rgba(251, 146, 60, 0.12);
-            --glass: rgba(255, 255, 255, 0.09);
-            --glass-border: rgba(251, 191, 36, 0.25);
-            --gold: #fbbf24;
-            --hover-border: rgba(251, 191, 36, 0.6);
-            --hover-shadow: rgba(251, 191, 36, 0.25);
-        }
-
-        /* ── RESET ── */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            color: var(--text);
-            min-height: 100vh;
-            overflow-x: hidden;
-            background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 40%, var(--bg3) 100%);
-            position: relative;
-            transition: background 1s ease;
-        }
-
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse at 20% 20%, var(--glow1) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, var(--glow2) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(226, 185, 111, 0.04) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: 0;
-            transition: background 1s ease;
-        }
-
-        /* ─────────────────────────────────────
-   1. GIFT BOX OPENING ANIMATION
-───────────────────────────────────── */
-        #gift-intro {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #0f0c1d, #1a0533, #0d1b3e);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 1.5rem;
-            transition: opacity 0.8s ease;
-        }
-
-        #gift-intro.fade-out {
-            opacity: 0;
-            pointer-events: none;
-        }
-
-        .gift-box-wrap {
-            cursor: pointer;
-            position: relative;
-            transform-style: preserve-3d;
-        }
-
-        .gift-box {
-            position: relative;
-            width: 140px;
-            height: 120px;
-            animation: bob 2s ease-in-out infinite;
-        }
-
-        .gift-lid {
-            position: absolute;
-            top: -30px;
-            left: -8px;
-            width: 156px;
-            height: 50px;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border-radius: 10px 10px 0 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 30px rgba(124, 58, 237, 0.6);
-            transform-origin: bottom center;
-            transition: transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 2;
-        }
-
-        .gift-lid.open {
-            transform: rotateX(-120deg) translateY(-30px);
-        }
-
-        .gift-lid::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 24px;
-            height: 16px;
-            background: linear-gradient(135deg, #e2b96f, #fbbf24);
-            border-radius: 0 0 4px 4px;
-        }
-
-        .gift-body {
-            width: 140px;
-            height: 120px;
-            background: linear-gradient(135deg, #6d28d9, #9333ea);
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 0 40px rgba(124, 58, 237, 0.5);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-        }
-
-        .gift-body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 60px;
-            width: 20px;
-            background: rgba(226, 185, 111, 0.5);
-        }
-
-        .gift-body::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 50px;
-            height: 20px;
-            background: rgba(226, 185, 111, 0.5);
-        }
-
-        .gift-sparkles {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .sparkle {
-            position: absolute;
-            font-size: 1.5rem;
-            animation: sparkle-fly 1s ease-out forwards;
-            opacity: 0;
-        }
-
-        @keyframes sparkle-fly {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) scale(1);
-            }
-
-            100% {
-                opacity: 0;
-                transform: translate(var(--tx), var(--ty)) scale(0);
-            }
-        }
-
-        .intro-text {
-            text-align: center;
-        }
-
-        .intro-text h2 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            background: linear-gradient(to right, #e2b96f, #f9a8d4);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .intro-text p {
-            color: rgba(241, 233, 255, 0.6);
-            font-size: 0.9rem;
-            margin-top: 0.4rem;
-        }
-
-        .open-btn {
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border: none;
-            color: #fff;
-            padding: 0.8rem 2.5rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 700;
-            font-family: 'Outfit', sans-serif;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 25px rgba(124, 58, 237, 0.5);
-            letter-spacing: 1px;
-        }
-
-        .open-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(124, 58, 237, 0.8);
-        }
-
-        @keyframes bob {
-
-            0%,
-            100% {
-                transform: translateY(0)
-            }
-
-            50% {
-                transform: translateY(-12px)
-            }
-        }
-
-        /* ─────────────────────────────────────
-   2. MUSIC PLAYER (floating bottom-left)
-───────────────────────────────────── */
-        #music-player {
-            position: fixed;
-            bottom: 1.5rem;
-            left: 1.5rem;
-            z-index: 100;
-            background: rgba(14, 10, 35, 0.9);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 0.8rem 1.2rem;
-            backdrop-filter: blur(16px);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            min-width: 200px;
-            transition: all 0.3s;
-            box-shadow: 0 4px 24px rgba(124, 58, 237, 0.2);
-        }
-
-        #music-player:hover {
-            box-shadow: 0 8px 32px rgba(124, 58, 237, 0.4);
-        }
-
-        .music-info {
-            flex: 1;
-        }
-
-        .music-title {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #fff;
-            white-space: nowrap;
-        }
-
-        .music-sub {
-            font-size: 0.62rem;
-            color: rgba(241, 233, 255, 0.5);
-        }
-
-        .music-wave {
-            display: flex;
-            gap: 2px;
-            align-items: flex-end;
-            height: 16px;
-        }
-
-        .music-wave span {
-            width: 3px;
-            border-radius: 2px;
-            background: linear-gradient(to top, #7c3aed, #e2b96f);
-            animation: wave 0.8s ease-in-out infinite;
-        }
-
-        .music-wave span:nth-child(1) {
-            height: 6px;
-            animation-delay: 0s;
-        }
-
-        .music-wave span:nth-child(2) {
-            height: 12px;
-            animation-delay: 0.1s;
-        }
-
-        .music-wave span:nth-child(3) {
-            height: 8px;
-            animation-delay: 0.2s;
-        }
-
-        .music-wave span:nth-child(4) {
-            height: 14px;
-            animation-delay: 0.3s;
-        }
-
-        .music-wave span:nth-child(5) {
-            height: 6px;
-            animation-delay: 0.4s;
-        }
-
-        .music-wave.paused span {
-            animation-play-state: paused;
-        }
-
-        @keyframes wave {
-
-            0%,
-            100% {
-                transform: scaleY(1)
-            }
-
-            50% {
-                transform: scaleY(0.4)
-            }
-        }
-
-        #play-btn {
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border: none;
-            color: #fff;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 0 12px rgba(124, 58, 237, 0.5);
-        }
-
-        #play-btn:hover {
-            transform: scale(1.1);
-        }
-
-        /* ─────────────────────────────────────
-   BACKGROUND OVERLAY
-───────────────────────────────────── */
-        .background-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url('background.png');
-            background-size: cover;
-            background-position: center;
-            opacity: 0.05;
-            z-index: -1;
-        }
-
-        /* ─────────────────────────────────────
-   HEADER
-───────────────────────────────────── */
-        header {
-            text-align: center;
-            padding: 60px 20px 20px;
-            animation: fadeInDown 1s ease-out;
-            position: relative;
-            z-index: 1;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 10px;
-        }
-
-        .logo i {
-            font-size: 3rem;
-            color: var(--gold);
-            filter: drop-shadow(0 0 15px rgba(226, 185, 111, 0.7));
-        }
-
-        h1 {
-            font-family: 'Dancing Script', cursive;
-            font-size: 4rem;
-            background: linear-gradient(to right, #e2b96f, #f1e9ff, #a78bfa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            font-weight: 300;
-            letter-spacing: 1px;
-            opacity: 0.7;
-            max-width: 500px;
-            margin: 8px auto 0;
-        }
-
-        /* ─────────────────────────────────────
-   2. DAILY LOVE MESSAGE BANNER
-───────────────────────────────────── */
-        #love-message-box {
-            position: relative;
-            z-index: 1;
-            max-width: 700px;
-            margin: 20px auto 10px;
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(226, 185, 111, 0.08));
-            border: 1px solid rgba(226, 185, 111, 0.25);
-            border-radius: 20px;
-            padding: 1.2rem 1.8rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-
-        .msg-date {
-            font-size: 0.65rem;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 0.4rem;
-        }
-
-        .msg-text {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.5rem;
-            color: #fff;
-            line-height: 1.4;
-        }
-
-        .msg-from {
-            font-size: 0.72rem;
-            color: rgba(241, 233, 255, 0.5);
-            margin-top: 0.4rem;
-        }
-
-        /* ─────────────────────────────────────
-   MAIN GRID
-───────────────────────────────────── */
-        main {
-            width: 100%;
-            max-width: 1200px;
-            padding: 20px;
-            flex-grow: 1;
-            position: relative;
-            z-index: 1;
-            margin: 0 auto;
-        }
-
-        .gift-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 20px 0;
-        }
-
-        .gift-card {
-            text-decoration: none;
-            color: inherit;
-            background: var(--glass);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            animation: fadeInUp 0.8s ease-out both;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 4px 24px rgba(124, 58, 237, 0.1);
-        }
-
-        .gift-card::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(167, 139, 250, 0.12) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-
-        .gift-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px var(--hover-shadow);
-            border-color: var(--hover-border);
-        }
-
-        .gift-card:hover::before {
-            opacity: 1;
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #fff;
-            transition: transform 0.4s;
-        }
-
-        .gift-card:hover .card-icon {
-            transform: scale(1.2) rotate(5deg);
-        }
-
-        h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-
-        p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            opacity: 0.7;
-        }
-
-        /* Locked */
-        .gift-card.locked {
-            cursor: not-allowed;
-            filter: grayscale(0.5) contrast(0.8);
-            opacity: 0.9;
-        }
-
-        .gift-card.locked:hover {
-            transform: translateY(-2px);
-            box-shadow: none;
-        }
-
-        .lock-overlay {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0, 0, 0, 0.4);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold);
-            font-size: 1.2rem;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 2;
-        }
-
-        .gift-card.unlocked .lock-overlay {
-            display: none;
-        }
-
-        .gift-card.unlocked {
-            filter: none;
-            opacity: 1;
-            cursor: pointer;
-        }
-
-        /* Section title */
-        .section-title {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2.5rem;
-            background: linear-gradient(to right, #e2b96f, #a78bfa);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
-            margin: 60px 0 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            filter: drop-shadow(0 0 12px rgba(226, 185, 111, 0.3));
-        }
-
-        .chemistry-section {
-            margin-bottom: 50px;
-        }
-
-        .chemistry .card-icon {
-            color: #00d4ff;
-        }
-
-        .study .card-icon {
-            color: #8ecae6;
-        }
-
-        .shaadi .card-icon {
-            color: #ffadad;
-        }
-
-        .birthday .card-icon,
-        .birthday-old .card-icon {
-            color: #fdffb6;
-        }
-
-        .buddy .card-icon {
-            color: #caffbf;
-        }
-
-        .apology .card-icon {
-            color: #9bf6ff;
-        }
-
-        .youtube .card-icon {
-            color: #ff0000;
-        }
-
-        .heart .card-icon {
-            color: #ff0054;
-        }
-
-        .math-hub .card-icon {
-            color: #f59e0b;
-            filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
-        }
-
-        /* ─────────────────────────────────────
-   6. PHOTO WALL
-───────────────────────────────────── */
-        .photo-wall {
-            margin: 40px 0 20px;
-        }
-
-        .photo-wall .section-title {
-            margin-top: 20px;
-        }
-
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 20px;
-            padding: 10px 0;
-        }
-
-        .photo-frame {
-            background: var(--glass);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            overflow: hidden;
-            aspect-ratio: 4/3;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.1);
-        }
-
-        .photo-frame:hover {
-            transform: translateY(-8px) scale(1.02);
-            box-shadow: 0 20px 40px var(--hover-shadow);
-            border-color: var(--hover-border);
-        }
-
-        .photo-bg {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .photo-emoji {
-            font-size: 3.5rem;
-            animation: float-em 3s ease-in-out infinite;
-        }
-
-        .photo-label {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.1rem;
-            color: #fff;
-            text-align: center;
-            padding: 0 1rem;
-        }
-
-        .photo-date {
-            font-size: 0.7rem;
-            color: rgba(241, 233, 255, 0.5);
-            letter-spacing: 1px;
-        }
-
-        @keyframes float-em {
-
-            0%,
-            100% {
-                transform: translateY(0)
-            }
-
-            50% {
-                transform: translateY(-8px)
-            }
-        }
-
-        /* ─────────────────────────────────────
-   7. SURPRISE BUTTON (floating)
-───────────────────────────────────── */
-        #surprise-btn {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 100;
-            background: linear-gradient(135deg, #f43f5e, #ec4899);
-            border: none;
-            color: #fff;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            cursor: pointer;
-            box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.5);
-            animation: pulse-btn 2s infinite;
-            transition: transform 0.2s;
-        }
-
-        #surprise-btn:hover {
-            transform: scale(1.15);
-        }
-
-        @keyframes pulse-btn {
-            0% {
-                box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.5)
-            }
-
-            70% {
-                box-shadow: 0 0 0 18px rgba(244, 63, 94, 0)
-            }
-
-            100% {
-                box-shadow: 0 0 0 0 rgba(244, 63, 94, 0)
-            }
-        }
-
-        /* Surprise modal */
-        #surprise-modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            z-index: 200;
-            background: rgba(14, 10, 35, 0.98);
-            border: 1px solid rgba(226, 185, 111, 0.3);
-            border-radius: 24px;
-            padding: 2.5rem 2rem;
-            text-align: center;
-            max-width: 380px;
-            width: 90%;
-            backdrop-filter: blur(20px);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 0 60px rgba(124, 58, 237, 0.4);
-        }
-
-        #surprise-modal.open {
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .modal-heart {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            display: block;
-            animation: beat 1s infinite;
-        }
-
-        .modal-quote {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.6rem;
-            color: #fff;
-            line-height: 1.5;
-        }
-
-        .modal-from {
-            font-size: 0.8rem;
-            color: rgba(241, 233, 255, 0.5);
-            margin-top: 0.8rem;
-        }
-
-        .modal-close {
-            margin-top: 1.2rem;
-            background: linear-gradient(135deg, #7c3aed, #a855f7);
-            border: none;
-            color: #fff;
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Outfit', sans-serif;
-        }
-
-        #modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            z-index: 199;
-            display: none;
-            backdrop-filter: blur(4px);
-        }
-
-        @keyframes beat {
-
-            0%,
-            100% {
-                transform: scale(1)
-            }
-
-            50% {
-                transform: scale(1.3)
-            }
-        }
-
-        /* FOOTER */
-        footer {
-            padding: 40px 20px;
-            text-align: center;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-        }
-
-        .eternal {
-            font-family: 'Dancing Script', cursive;
-            font-size: 1.8rem;
-            margin-top: 10px;
-            background: linear-gradient(to right, #e2b96f, #f9a8d4);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* Floating hearts */
-        .hearts-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .floating-heart {
-            position: absolute;
-            color: rgba(167, 139, 250, 0.25);
-            pointer-events: none;
-            animation: float-h 10s linear infinite;
-        }
-
-        @keyframes float-h {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 0.5;
-            }
-
-            90% {
-                opacity: 0.5;
-            }
-
-            100% {
-                transform: translateY(-100px) rotate(360deg);
-                opacity: 0;
-            }
-        }
-
-        /* CARD STAGGER ANIMATIONS */
-        .gift-card:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .gift-card:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-
-        .gift-card:nth-child(3) {
-            animation-delay: 0.3s;
-        }
-
-        .gift-card:nth-child(4) {
-            animation-delay: 0.4s;
-        }
-
-        .gift-card:nth-child(5) {
-            animation-delay: 0.5s;
-        }
-
-        .gift-card:nth-child(6) {
-            animation-delay: 0.6s;
-        }
-
-        .gift-card:nth-child(7) {
-            animation-delay: 0.7s;
-        }
-
-        .gift-card:nth-child(n+8) {
-            animation-delay: 0.8s;
-        }
-
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px)
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0)
-            }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0
-            }
-
-            to {
-                opacity: 1
-            }
-        }
-
-        @media(max-width:600px) {
-            h1 {
-                font-size: 2.8rem;
-            }
-
-            .logo i {
-                font-size: 2.2rem;
-            }
-
-            .gift-grid {
-                grid-template-columns: 1fr;
-            }
-
-            #music-player {
-                min-width: 160px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles-new.css">
 </head>
 
 <body>
 
-    <!-- ========== 1. GIFT BOX OPENING ANIMATION ========== -->
+    <!-- ========== GIFT BOX OPENING ANIMATION ========== -->
     <div id="gift-intro">
         <div class="gift-box-wrap" onclick="startOpenAnimation()">
             <div class="gift-box">
@@ -1017,7 +35,7 @@
     <!-- ========== MODAL OVERLAY ========== -->
     <div id="modal-overlay" onclick="closeModal()"></div>
 
-    <!-- ========== 7. SURPRISE MODAL ========== -->
+    <!-- ========== SURPRISE MODAL ========== -->
     <div id="surprise-modal">
         <span class="modal-heart" id="modal-heart">💖</span>
         <div class="modal-quote" id="modal-quote">Loading love...</div>
@@ -1025,16 +43,60 @@
         <button class="modal-close" onclick="closeModal()">Close 💕</button>
     </div>
 
+    <!-- ========== LOVE WHEEL MODAL ========== -->
+    <div id="wheel-modal">
+        <h3 class="wheel-title">🎡 Spin the Love Wheel!</h3>
+        <div class="wheel-container">
+            <canvas id="wheelCanvas" width="300" height="300"></canvas>
+            <div class="wheel-pointer">▼</div>
+        </div>
+        <button class="wheel-spin-btn" id="spinBtn" onclick="spinWheel()">SPIN! 🎰</button>
+        <div class="wheel-result" id="wheelResult"></div>
+        <button class="modal-close" onclick="closeWheel()">Close ✨</button>
+    </div>
+
+    <!-- ========== SECRET VAULT MODAL ========== -->
+    <div id="vault-modal">
+        <div id="vault-lock-screen">
+            <span style="font-size:3rem;">🔐</span>
+            <h3 style="color:#e2b96f;margin:1rem 0 0.5rem;">Secret Love Vault</h3>
+            <p style="color:rgba(241,233,255,0.5);font-size:0.85rem;margin-bottom:1rem;">Enter the password to unlock
+            </p>
+            <input type="password" id="vault-password" placeholder="Enter password..." class="vault-input"
+                onkeypress="if(event.key==='Enter')checkVault()">
+            <button class="vault-unlock-btn" onclick="checkVault()">Unlock 🔓</button>
+            <p id="vault-error" style="color:#f43f5e;font-size:0.8rem;margin-top:0.5rem;display:none;">Wrong password!
+                Try again 💔</p>
+        </div>
+        <div id="vault-content" style="display:none;">
+            <span style="font-size:3rem;">💌</span>
+            <h3 style="color:#e2b96f;margin:1rem 0;">Poku's Secret Letters</h3>
+            <div class="vault-letter" id="vault-letter-content"></div>
+            <div style="display:flex;gap:0.5rem;justify-content:center;margin-top:1rem;">
+                <button class="modal-close" onclick="nextLetter()">Next Letter 💌</button>
+                <button class="modal-close" onclick="closeVault()">Close 🔒</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ========== BACKGROUND ========== -->
     <div class="background-overlay"></div>
 
-    <!-- ========== 2. MUSIC PLAYER ========== -->
+    <!-- ========== THEME SWITCHER ========== -->
+    <div class="theme-switcher" id="themeSwitcher">
+        <button class="theme-btn active" data-theme="royal" title="Royal Purple">💜</button>
+        <button class="theme-btn" data-theme="romantic" title="Romantic Pink">💗</button>
+        <button class="theme-btn" data-theme="ocean" title="Ocean Blue">🌊</button>
+        <button class="theme-btn" data-theme="golden" title="Golden Hour">🌅</button>
+    </div>
+
+    <!-- ========== MUSIC PLAYER ========== -->
     <div id="music-player">
         <button id="play-btn" onclick="toggleMusic()">
             <i class="fas fa-play" id="play-icon"></i>
         </button>
         <div class="music-info">
-            <div class="music-title">Romantic Piano 🎹</div>
+            <div class="music-title" id="songTitle">Our Romantic Tune 🎹</div>
             <div class="music-sub">For My Wife ❤️</div>
         </div>
         <div class="music-wave paused" id="music-wave">
@@ -1042,10 +104,10 @@
         </div>
     </div>
     <audio id="bg-music" loop>
-        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+        <source src="romantic-tune.m4a" type="audio/mp4">
     </audio>
 
-    <!-- ========== 7. SURPRISE BUTTON ========== -->
+    <!-- ========== SURPRISE BUTTON ========== -->
     <button id="surprise-btn" onclick="showSurprise()" title="Press for a surprise 💝">💝</button>
 
     <!-- ========== HEADER ========== -->
@@ -1054,14 +116,36 @@
             <i class="fas fa-gift"></i>
             <h1>Ishu's Giftbox</h1>
         </div>
-        <p class="subtitle">A Collection of Special Moments &amp; Creations for the One and Only Ishika 💜</p>
+        <p class="subtitle">A Collection of Special Moments & Creations for the One and Only Ishika 💜</p>
+
+        <!-- VISIT COUNTER -->
+        <div class="visit-counter" id="visitCounter">
+            <i class="fas fa-eye"></i> Ishu ne ye page <span id="visitCount">0</span> baar khola 💜
+        </div>
     </header>
 
-    <!-- ========== 2. DAILY LOVE MESSAGE ========== -->
-    <div id="love-message-box">
-        <div class="msg-date" id="msg-date">Loading today's message...</div>
-        <div class="msg-text" id="msg-text">💕</div>
-        <div class="msg-from">— Poku, for My Wife (My Ishu) ❤️</div>
+    <!-- ========== RELATIONSHIP STATS ========== -->
+    <div class="stats-section">
+        <div class="stat-card">
+            <div class="stat-number" id="daysTogether">0</div>
+            <div class="stat-label">Days Together 💕</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="hoursLove">0</div>
+            <div class="stat-label">Hours of Love ⏰</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">∞</div>
+            <div class="stat-label">Messages Sent 💬</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">💯</div>
+            <div class="stat-label">Love Level 🔥</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="nextAnniversary">0</div>
+            <div class="stat-label">Days to Anniversary 💍</div>
+        </div>
     </div>
 
     <!-- ========== MAIN CONTENT ========== -->
@@ -1069,28 +153,34 @@
         <div class="gift-grid">
             <a href="https://thoratpratik2323-hue.github.io/ip-study-hub/" class="gift-card study" target="_blank"
                 id="card-study">
+                <div class="card-badge badge-fav">⭐ FAVORITE</div>
                 <div class="card-icon"><i class="fas fa-book-reader"></i></div>
                 <div class="card-content">
                     <h3>IP Study Hub</h3>
-                    <p>Our special place for productive study sessions.</p>
+                    <p>Yahan pe hum dono saath baith ke padhte hain na? Timer on, targets set — aur tumhara "abhi 5 min
+                        aur" sunna 😄📚</p>
                 </div>
             </a>
             <a href="https://thoratpratik2323-hue.github.io/pratik-ishika-shaadi/" class="gift-card shaadi locked"
                 target="_blank" id="card-shaadi" data-unlock-date="2026-03-01">
                 <div class="lock-overlay"><i class="fas fa-lock"></i></div>
+                <div class="card-badge badge-soon">🔒 TOMORROW!</div>
                 <div class="card-icon"><i class="fas fa-heart"></i></div>
                 <div class="card-content">
-                    <h3>Shaadi Plans</h3>
-                    <p>Unlock on March 1st, 2026 💍</p>
+                    <h3>Shaadi Plans 💍</h3>
+                    <p>Hamari future ki planning — unlocks on March 1st!</p>
+                    <div class="countdown-timer" id="shaadiCountdown"></div>
                 </div>
             </a>
             <a href="https://thoratpratik2323-hue.github.io/Ishu-2026-Birthday-Gift/" class="gift-card birthday locked"
                 target="_blank" id="card-birthday-2026" data-unlock-date="2026-08-19">
                 <div class="lock-overlay"><i class="fas fa-lock"></i></div>
+                <div class="card-badge badge-soon">🔒 COMING SOON</div>
                 <div class="card-icon"><i class="fas fa-cake-candles"></i></div>
                 <div class="card-content">
-                    <h3>Birthday Gift 2026</h3>
-                    <p>Unlock on Aug 19th, 2026 🎂</p>
+                    <h3>Birthday Gift 2026 🎂</h3>
+                    <p>Tumhara special birthday surprise — intezaar karo! 🎂</p>
+                    <div class="countdown-timer" id="birthdayCountdown"></div>
                 </div>
             </a>
             <a href="https://thoratpratik2323-hue.github.io/valentines-buddy-2026/" class="gift-card buddy"
@@ -1098,7 +188,9 @@
                 <div class="card-icon"><i class="fas fa-user-friends"></i></div>
                 <div class="card-content">
                     <h3>Valentine's Buddy</h3>
-                    <p>Your permanent Valentine's buddy forever.</p>
+                    <p>Valentine's pe banaya tha tumhare liye — tum meri permanent Valentine ho, koi aur option hi nahi
+                        hai
+                        😤💘</p>
                 </div>
             </a>
             <a href="https://thoratpratik2323-hue.github.io/apology-for-ishu/" class="gift-card apology" target="_blank"
@@ -1106,207 +198,197 @@
                 <div class="card-icon"><i class="fas fa-face-smile-beam"></i></div>
                 <div class="card-content">
                     <h3>Apology for Ishu</h3>
-                    <p>Because you deserve all the happiness.</p>
+                    <p>Jab bhi galti ki toh ye banaya — sorry bolne ka mera tarika thoda alag hai 😅🌸</p>
                 </div>
             </a>
             <a href="https://yt-download-pro.onrender.com/" class="gift-card youtube" target="_blank" id="card-yt">
+                <div class="card-badge badge-new">🔥 NEW</div>
                 <div class="card-icon"><i class="fab fa-youtube"></i></div>
                 <div class="card-content">
                     <h3>YT Download Pro</h3>
-                    <p>Premium YouTube experience for my girl.</p>
+                    <p>Tum boli thi "video download nahi ho raha" — toh poora app bana diya tumhare liye 😎🎬</p>
                 </div>
             </a>
             <a href="https://thoratpratik2323-hue.github.io/heart/" class="gift-card heart" target="_blank"
                 id="card-heart">
                 <div class="card-icon"><i class="fas fa-heart-pulse"></i></div>
                 <div class="card-content">
-                    <h3>Heart</h3>
-                    <p>Direct view into my heart for you.</p>
+                    <h3>Poku's Heart ❤️</h3>
+                    <p>Ye dil hai — tumhara naam likha hai ispe. Koi nahi mita sakta 💓</p>
                 </div>
             </a>
             <a href="https://thoratpratik2323-hue.github.io/Ishu-1st-Birthday-Gift/" class="gift-card birthday-old"
                 target="_blank" id="card-birthday-1st">
+                <div class="card-badge badge-classic">✨ CLASSIC</div>
                 <div class="card-icon"><i class="fas fa-gift"></i></div>
                 <div class="card-content">
                     <h3>1st Birthday Gift</h3>
-                    <p>Where it all started. Our first celebration.</p>
+                    <p>Pehla birthday gift jo maine tumhare liye banaya tha — yaad hai na? 🎁</p>
                 </div>
             </a>
         </div>
 
+        <!-- SPECIAL ACTIONS ROW -->
+        <div class="special-actions">
+            <button class="action-btn vault-btn" onclick="openVault()">
+                <i class="fas fa-lock"></i> Secret Love Vault 🔐
+            </button>
+            <button class="action-btn wheel-btn" onclick="openWheel()">
+                <i class="fas fa-dharmachakra"></i> Love Wheel 🎡
+            </button>
+        </div>
 
-        <!-- Chem Hub -->
+        <!-- CHEM HUB -->
         <h2 class="section-title"><i class="fas fa-graduation-cap"></i> Chem Master Hub</h2>
         <div class="gift-grid chemistry-section">
             <a href="https://thoratpratik2323-hue.github.io/chemistry-70-70-hub/" class="gift-card chemistry master-hub"
                 target="_blank" id="card-chem-hub">
+                <div class="card-badge badge-hot">🧪 EXAM READY</div>
                 <div class="card-icon"><i class="fas fa-microscope"></i></div>
                 <div class="card-content">
                     <h3>Chem Master Hub</h3>
-                    <p>Complete Revision, Formulae &amp; Support for Class 12 Boards.</p>
+                    <p>Complete Revision, Formulae & Support for Class 12 Boards.</p>
                 </div>
             </a>
         </div>
 
-        <!-- Math Hub -->
+        <!-- MATH HUB -->
         <h2 class="section-title"><i class="fas fa-calculator"></i> Math Master Hub</h2>
         <div class="gift-grid chemistry-section">
             <a href="https://thoratpratik2323-hue.github.io/ishu-math-hub/" class="gift-card math-hub master-hub"
                 target="_blank" id="card-math-hub">
+                <div class="card-badge badge-hot">🎯 27 PORTALS</div>
                 <div class="card-icon"><i class="fas fa-infinity"></i></div>
                 <div class="card-content">
                     <h3>Math Master Hub 🎯</h3>
-                    <p>27 Portals — Formulas, PYQs, MCQs, Case Studies, Mind Maps &amp; more. Complete 80/80 System!</p>
+                    <p>27 Portals — Formulas, PYQs, MCQs, Case Studies, Mind Maps & more. Complete 80/80 System!</p>
                 </div>
             </a>
         </div>
+
+        <!-- ========== OUR MEMORIES WALL ========== -->
+        <h2 class="section-title"><i class="fas fa-camera-retro"></i> Our Memories Wall 📸</h2>
+        <div class="memories-wall">
+            <div class="memory-card main-memory">
+                <img src="couple-photo.jpeg" alt="Pratik & Ishika" class="memory-img">
+                <div class="memory-caption">
+                    <span class="memory-emoji">💕</span>
+                    <span class="memory-text">Some love movements with my fav</span>
+                    <span class="memory-date">Since 2 Aug 2025 ❤️</span>
+                </div>
+            </div>
+            <div class="memory-card video-memory">
+                <video src="memory-vid-1.mp4" class="memory-video" muted playsinline></video>
+                <div class="memory-play-btn"><i class="fas fa-play"></i></div>
+                <div class="memory-caption"><span class="memory-text">Our Moments 🎬</span></div>
+            </div>
+            <div class="memory-card video-memory">
+                <video src="memory-vid-2.mp4" class="memory-video" muted playsinline></video>
+                <div class="memory-play-btn"><i class="fas fa-play"></i></div>
+                <div class="memory-caption"><span class="memory-text">Together Forever 💜</span></div>
+            </div>
+            <div class="memory-card video-memory">
+                <video src="memory-vid-3.mp4" class="memory-video" muted playsinline></video>
+                <div class="memory-play-btn"><i class="fas fa-play"></i></div>
+                <div class="memory-caption"><span class="memory-text">Video Call Vibes 📞</span></div>
+            </div>
+            <div class="memory-card video-memory">
+                <video src="memory-vid-4.mp4" class="memory-video" muted playsinline></video>
+                <div class="memory-play-btn"><i class="fas fa-play"></i></div>
+                <div class="memory-caption"><span class="memory-text">Our Story 🌟</span></div>
+            </div>
+            <div class="memory-card video-memory">
+                <video src="memory-vid-5.mp4" class="memory-video" muted playsinline></video>
+                <div class="memory-play-btn"><i class="fas fa-play"></i></div>
+                <div class="memory-caption"><span class="memory-text">Love Moments 💗</span></div>
+            </div>
+            <div class="memory-card video-memory">
+                <video src="memory-vid-6.mp4" class="memory-video" muted playsinline></video>
+                <div class="memory-play-btn"><i class="fas fa-play"></i></div>
+                <div class="memory-caption"><span class="memory-text">Best Memories 🥰</span></div>
+            </div>
+            <div class="memory-card video-memory">
+                <video src="memory-vid-7.mp4" class="memory-video" muted playsinline></video>
+                <div class="memory-play-btn"><i class="fas fa-play"></i></div>
+                <div class="memory-caption"><span class="memory-text">Us Two 💫</span></div>
+            </div>
+            <div class="memory-card video-memory">
+                <video src="memory-vid-8.mp4" class="memory-video" muted playsinline></video>
+                <div class="memory-play-btn"><i class="fas fa-play"></i></div>
+                <div class="memory-caption"><span class="memory-text">Precious Times ✨</span></div>
+            </div>
+        </div>
+
+        <!-- ========== HANDWRITTEN LETTER ========== -->
+        <h2 class="section-title"><i class="fas fa-pen-fancy"></i> Poku ki Chitthi ✍️</h2>
+        <div class="letter-section">
+            <div class="letter-paper">
+                <div class="letter-content">
+                    <p class="letter-date">28 February, 2026</p>
+                    <p class="letter-greeting">Meri Pyaari Ishu,</p>
+                    <p class="letter-body">
+                        Main likhne mein bohot acha nahi hoon. Par kuch baatein hain jo bolni zaroori hain.
+                    </p>
+                    <p class="letter-body">
+                        2 August se lekar aaj tak — kitna kuch badal gaya. Pehle akela tha, ab tumhe har cheez mein
+                        dhundhta hoon. Phone uthata hoon toh pehle tumhara naam dikhta hai, sone se pehle tumhari
+                        baatein yaad
+                        aati hain. Tum nahi hoti na toh mera din complete nahi lagta.
+                    </p>
+                    <p class="letter-body">
+                        Bohot baar ladai hui, bohot baar roya bhi — par ek second bhi nahi socha ki chhod doon. Kyunki
+                        tumhe chhod ke jaaunga kahaan? Tum hi toh ghar ho mera.
+                    </p>
+                    <p class="letter-body">
+                        Ye sab websites, ye giftbox, ye coding — sab tumhare liye karta hoon. Kyunki mere paas paise
+                        nahi
+                        hain tumhe mehenga gift dene ke. Par ye de sakta hoon — apna time, apni mehnat, aur apna dil. Ye
+                        teen cheezein hamesha tumhari hain.
+                    </p>
+                    <p class="letter-body">
+                        Ek din pakka — shaadi hogi, hum honge, tumhara haath mere haath mein hoga. Bas thoda intezaar
+                        aur.
+                        <strong>Tum meri ho, main tumhara hoon. Bas.</strong> 💍
+                    </p>
+                    <p class="letter-sign">Tumhara Poku,<br><span class="letter-name">Pratik ❤️</span></p>
+                </div>
+            </div>
+        </div>
     </main>
 
+    <!-- ========== FOOTER ========== -->
     <footer>
+        <div class="footer-heart-beat">💕</div>
         <p>Made with ❤️ by <strong>Poku</strong> for Ishika (My Wife)</p>
         <p class="eternal">Forever and Always 💕</p>
+        <div class="footer-since">
+            <i class="fas fa-heart"></i> Together Since 2 August 2025
+            <span class="footer-dot">•</span>
+            Anniversary: 26 January
+            <span class="footer-dot">•</span>
+            <span id="footerDays">0</span> days of pure love <i class="fas fa-heart"></i>
+        </div>
+        <div class="footer-couple">👨‍❤️‍👩 Pratik & Ishika — Poku & Ishu 👨‍❤️‍👩</div>
     </footer>
 
     <div class="hearts-container" id="hearts"></div>
 
-    <script>
-        // ── 8. DAY / NIGHT THEME ──────────────────────────
-        const hour = new Date().getHours();
-        if (hour >= 6 && hour < 18) document.body.classList.add('day-mode');
+    <!-- ========== EASTER EGG (Konami: ↑↑↓↓←→←→BA) ========== -->
+    <div id="easter-egg-modal">
+        <div class="ee-content">
+            <span style="font-size:5rem;display:block;margin-bottom:1rem;">💍👰🤵</span>
+            <h2 style="font-family:'Dancing Script',cursive;font-size:2.5rem;color:#e2b96f;">Secret Unlocked!</h2>
+            <p style="font-size:1.2rem;margin:1rem 0;color:rgba(241,233,255,0.8);line-height:1.8;">
+                "Shaadi hogi, hum honge, duniya dekhegi — inshallah" 👑
+            </p>
+            <p style="color:rgba(241,233,255,0.5);font-size:0.9rem;">— From Poku, always 🌙</p>
+            <button class="modal-close"
+                onclick="document.getElementById('easter-egg-modal').classList.remove('open');document.getElementById('modal-overlay').style.display='none';">Close
+                💕</button>
+        </div>
+    </div>
 
-        // ── 1. GIFT BOX OPENING ANIMATION ───────────────
-        const intro = document.getElementById('gift-intro');
-        const lid = document.getElementById('gift-lid');
-        let opened = false;
-
-        function startOpenAnimation() {
-            if (opened) return; opened = true;
-            lid.classList.add('open');
-            // Sparkles
-            const emojis = ['✨', '💖', '🌟', '💜', '🎉', '💛', '🌸'];
-            const sp = document.getElementById('sparkles');
-            emojis.forEach((e, i) => {
-                const s = document.createElement('div');
-                s.className = 'sparkle'; s.textContent = e;
-                s.style.cssText = `--tx:${(Math.random() - 0.5) * 200}px;--ty:${-(50 + Math.random() * 100)}px;animation-delay:${i * 0.08}s;left:${Math.random() * 100}px;`;
-                sp.appendChild(s);
-            });
-            // Confetti burst
-            confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 }, colors: ['#7c3aed', '#e2b96f', '#f9a8d4', '#a78bfa', '#fff'] });
-            setTimeout(() => { intro.classList.add('fade-out'); }, 1200);
-            setTimeout(() => { intro.style.display = 'none'; }, 2000);
-        }
-
-        // ── 2. DAILY LOVE MESSAGES ────────────────────────
-        const messages = [
-            "Tum meri zindagi ki sabse khoobsurat cheez ho, Ishu 🌸",
-            "Har subah tumhare saath uthne ki khawaish hai meri 💕",
-            "Tumhara hँasna mujhe duniya ki saari khushiyan de deta hai 😊",
-            "Ishu, tum meri har prayer mein ho ❤️",
-            "Mera dil kehta hai — bas tum, hamesha tum 💜",
-            "Tumse pyaar karna meri sabse best habit hai 🕊️",
-            "Distance nothing, when love is everything — Poku loves Ishu 🌙",
-            "Teri aankhon mein ek duniya hai, jahan main rehna chahta hoon 🌌",
-            "Tumhari ek smile ke liye kuch bhi karunga, Ishu 😍",
-            "Tum mere sapnon se bhi zyada pyaari ho 💫",
-            "Har din teri yaad aati hai — thousands of times 🧡",
-            "Ishu, tum nahi hoti toh main kya hota? 🤍",
-            "Teri awaz sunna mera favorite part of the day hai 📞",
-            "Tum meri dua ho, meri duaa ka jawaab bhi 🙏",
-            "Jab tum paas hoti ho, duniya perfect lagti hai 🌺",
-            "Har raat neend aane se pehle tumhara naam aata hai 🌟",
-            "Tere bina ye sab adhoora hai, Ishu 💔➡️💕",
-            "Tumhara har andaaz mujhe ek naya reason deta hai tujhse pyaar karne ka 💝",
-            "Main tumse itna pyaar karta hoon — words mein nahi dalta 🔥",
-            "Ishu — you are my home 🏠❤️",
-            "Teri ek baat meri poori duniya badal deti hai ✨",
-            "Board exam mein 80/80 lane wali ladki — meri ladki 🎯❤️",
-            "Tum padho, tum succeed karo — main hoon na, hamesha 🤝",
-            "Teri mehnat dekh ke mujhe aur zyada tumse pyaar hota hai 📚💕",
-            "Late night calls, early morning texts — ye sab sirf tumhare liye 🌙☀️",
-            "Kabhi kabhi sochta hoon — itni perfect ladki kar bhi sakti hai kuch galat? 😄❤️",
-            "Ishu tumhara dimag, tumhara dil — dono amazing hain 💡💜",
-            "Ye giftbox tumhara hai — kyunki tum meri sabse badi gift ho 🎁",
-            "Poku loves Ishu — aaj, kal, hamesha ♾️",
-            "Tum mere liye sab kuch ho — Ishu, My Wife, My Everything 💍"
-        ];
-        const d = new Date();
-        const dayOfYear = Math.floor((d - new Date(d.getFullYear(), 0, 0)) / (1000 * 60 * 60 * 24));
-        const msg = messages[dayOfYear % messages.length];
-        document.getElementById('msg-text').textContent = msg;
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        document.getElementById('msg-date').textContent = `Today — ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} 💌`;
-
-        // ── MUSIC PLAYER ──────────────────────────────────
-        const audio = document.getElementById('bg-music');
-        const playIcon = document.getElementById('play-icon');
-        const wave = document.getElementById('music-wave');
-        let playing = false;
-
-        function toggleMusic() {
-            if (!playing) {
-                audio.play().then(() => {
-                    playing = true;
-                    playIcon.className = 'fas fa-pause';
-                    wave.classList.remove('paused');
-                }).catch(() => {
-                    // Autoplay blocked — show info
-                    console.log('Autoplay blocked by browser');
-                });
-            } else {
-                audio.pause(); playing = false;
-                playIcon.className = 'fas fa-play';
-                wave.classList.add('paused');
-            }
-        }
-
-        // ── 7. SURPRISE QUOTES ────────────────────────────
-        const surprises = [
-            { heart: '💗', q: "\"Tum woh insaan ho jiske saath baith ke chup rehna bhi bahut acha lagta hai.\" 🌙" },
-            { heart: '🥺', q: "\"Teri ek naraazgi mujhe ek sheesh ki tarah toot deti hai — isliye tujhe kabhi dukh nahi dunga.\" 💔➡️💕" },
-            { heart: '☁️', q: "\"Jab bhi akela hota hoon, teri yaad ek warm hug ki tarah aa jaati hai.\" 🤗" },
-            { heart: '🌟', q: "\"Tujhe khush dekhna mera daily goal hai — aur hamesha rahega.\" 😊✨" },
-            { heart: '🫶', q: "\"Board mein 80 lana hai — isliye nahi ki marks chahiye, isliye kyunki tum deserve karti ho sab kuch best.\" 🎯" },
-            { heart: '🌻', q: "\"Sach bolun? Tum akeli wajah ho jiske liye main apna best version banna chahta hoon.\" 💪❤️" },
-            { heart: '🌙', q: "\"Raat ko phone rakhne ke baad bhi tumhara khayal jaata nahi — aur main chahta bhi nahi ki jaye.\" 💭" },
-            { heart: '💌', q: "\"Ye giftbox, ye sari websites, ye sab ek hi baat kehte hain — I love you, Ishu. Always.\" 🏠❤️" },
-            { heart: '🫁', q: "\"Teri awaaz sunna mera favorite sound hai is poori duniya mein.\" 📞💜" },
-            { heart: '🌹', q: "\"Jo tum feel karti ho, jo tum sochti ho — sab kuch important hai mere liye.\" 🤍" },
-            { heart: '💛', q: "\"Tumne mujhe ek reason diya khush rehne ka — aur main wo reason hamesha tight pakad ke rakhunga.\" 🤝" },
-            { heart: '🕊️', q: "\"Poku + Ishu = ek aisi kahani jo bahut beautiful hai — aur abhi toh sirf shuruat hai.\" 📖✨" },
-        ];
-
-        function showSurprise() {
-            const s = surprises[Math.floor(Math.random() * surprises.length)];
-            document.getElementById('modal-heart').textContent = s.heart;
-            document.getElementById('modal-quote').textContent = s.q;
-            document.getElementById('surprise-modal').classList.add('open');
-            document.getElementById('modal-overlay').style.display = 'block';
-            confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 }, colors: ['#f43f5e', '#ec4899', '#e2b96f', '#a78bfa'] });
-        }
-        function closeModal() {
-            document.getElementById('surprise-modal').classList.remove('open');
-            document.getElementById('modal-overlay').style.display = 'none';
-        }
-
-        // ── FLOATING HEARTS ───────────────────────────────
-        const hc = document.getElementById('hearts');
-        for (let i = 0; i < 18; i++) {
-            const h = document.createElement('i');
-            h.className = 'fas fa-heart floating-heart';
-            h.style.cssText = `left:${Math.random() * 100}%;font-size:${0.6 + Math.random() * 1.2}rem;animation-delay:${Math.random() * 10}s;animation-duration:${8 + Math.random() * 6}s;`;
-            hc.appendChild(h);
-        }
-
-        // ── UNLOCK LOCKED CARDS ───────────────────────────
-        document.querySelectorAll('.gift-card.locked').forEach(card => {
-            const unlockDate = card.dataset.unlockDate;
-            if (unlockDate && new Date() >= new Date(unlockDate)) {
-                card.classList.remove('locked');
-                card.classList.add('unlocked');
-            }
-        });
-    </script>
+    <script src="app.js"></script>
 </body>
 
 </html>
