@@ -1,10 +1,11 @@
 :root {
-    --primary-pink: #ff758c;
-    --secondary-pink: #ff7eb3;
-    --glass-bg: rgba(255, 255, 255, 0.15);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --text-color: #ffffff;
-    --accent-gold: #ffd700;
+    --primary: #7c3aed;
+    --secondary: #a855f7;
+    --glass-bg: rgba(255, 255, 255, 0.07);
+    --glass-border: rgba(255, 255, 255, 0.15);
+    --text-color: #f1e9ff;
+    --accent-gold: #e2b96f;
+    --rose: #f9a8d4;
 }
 
 * {
@@ -18,10 +19,26 @@ body {
     color: var(--text-color);
     min-height: 100vh;
     overflow-x: hidden;
-    background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+    background: linear-gradient(135deg, #0f0c1d 0%, #1a0533 40%, #0d1b3e 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background:
+        radial-gradient(ellipse at 20% 20%, rgba(124, 58, 237, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(168, 85, 247, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(226, 185, 111, 0.06) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
 }
 
 .background-overlay {
@@ -30,11 +47,10 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    /* Use current directory image if possible, or fallback to gradient */
     background-image: url('background.png');
     background-size: cover;
     background-position: center;
-    opacity: 0.6;
+    opacity: 0.08;
     z-index: -1;
 }
 
@@ -55,17 +71,17 @@ header {
 .logo i {
     font-size: 3rem;
     color: var(--accent-gold);
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+    filter: drop-shadow(0 0 15px rgba(226, 185, 111, 0.7));
 }
 
 h1 {
     font-family: 'Dancing Script', cursive;
     font-size: 4rem;
-    background: linear-gradient(to right, #fff, var(--accent-gold));
+    background: linear-gradient(to right, #e2b96f, #f1e9ff, #a78bfa);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+    text-shadow: 2px 2px 20px rgba(124, 58, 237, 0.4);
 }
 
 .subtitle {
@@ -94,10 +110,10 @@ main {
 .gift-card {
     text-decoration: none;
     color: inherit;
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(167, 139, 250, 0.2);
     border-radius: 20px;
     padding: 25px;
     display: flex;
@@ -108,6 +124,7 @@ main {
     animation: fadeInUp 0.8s ease-out both;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 4px 24px rgba(124, 58, 237, 0.1);
 }
 
 .gift-card::before {
@@ -117,15 +134,15 @@ main {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(167, 139, 250, 0.15) 0%, transparent 70%);
     opacity: 0;
     transition: opacity 0.4s;
 }
 
 .gift-card:hover {
     transform: translateY(-10px) scale(1.02);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 20px 40px rgba(124, 58, 237, 0.3);
+    border-color: rgba(226, 185, 111, 0.5);
 }
 
 .gift-card:hover::before {
@@ -165,7 +182,10 @@ footer {
     font-family: 'Dancing Script', cursive;
     font-size: 1.8rem;
     margin-top: 10px;
-    color: var(--accent-gold);
+    background: linear-gradient(to right, #e2b96f, #f9a8d4);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 /* Locked Card Styles */
@@ -211,7 +231,10 @@ footer {
 .section-title {
     font-family: 'Dancing Script', cursive;
     font-size: 2.5rem;
-    color: var(--accent-gold);
+    background: linear-gradient(to right, #e2b96f, #a78bfa);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     text-align: center;
     margin: 60px 0 30px;
     display: flex;
@@ -219,6 +242,7 @@ footer {
     justify-content: center;
     gap: 15px;
     animation: fadeIn 1s ease-in;
+    filter: drop-shadow(0 0 12px rgba(226, 185, 111, 0.3));
 }
 
 .chemistry-section {
@@ -247,7 +271,7 @@ footer {
 }
 
 .valentine .card-icon {
-    color: #ff758c;
+    color: #f9a8d4;
 }
 
 .buddy .card-icon {
@@ -300,7 +324,7 @@ footer {
 
 .floating-heart {
     position: absolute;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(167, 139, 250, 0.3);
     pointer-events: none;
     animation: float 10s linear infinite;
 }
