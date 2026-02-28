@@ -282,6 +282,11 @@ footer {
     color: #ff0054;
 }
 
+.math-hub .card-icon {
+    color: #f59e0b;
+    filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.6));
+}
+
 /* Floating Hearts Animation */
 .hearts-container {
     position: fixed;
