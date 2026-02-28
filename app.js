@@ -24,7 +24,10 @@ function startOpenAnimation() {
     });
     confetti({ particleCount: 100, spread: 80, origin: { y: 0.5 }, colors: ['#7c3aed', '#e2b96f', '#f9a8d4', '#a78bfa', '#fff'] });
     setTimeout(() => intro.classList.add('fade-out'), 1200);
-    setTimeout(() => intro.style.display = 'none', 2000);
+    setTimeout(() => {
+        intro.style.display = 'none';
+        if (!playing) toggleMusic();
+    }, 2000);
 }
 
 
