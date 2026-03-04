@@ -866,6 +866,11 @@ h3 {
     color: #ffadad;
 }
 
+.games .card-icon {
+    color: #ffd166;
+    filter: drop-shadow(0 0 8px rgba(255, 209, 102, 0.6));
+}
+
 .birthday .card-icon,
 .birthday-old .card-icon {
     color: #fdffb6;
